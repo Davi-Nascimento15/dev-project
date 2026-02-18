@@ -72,8 +72,7 @@ const ClientListing = () => {
                             Header: "Ações",
                             id: "actions",
                             Cell: ({ row }: { row: { original: Client} }) => (
-                            <Row>
-                                <Col md={3}>
+                            <div style={{display:'flex', flexWrap:'wrap',gap:'10px' }}>
                                     <Button 
                                         variant="outline-primary" 
                                         size="sm"
@@ -81,15 +80,13 @@ const ClientListing = () => {
                                     >
                                     Editar
                                     </Button>
-                                </Col>
-                                <Col  md={3}>
                                     <Button 
                                         variant="outline-danger" 
                                         size="sm"
                                         onClick={() => {
                                             showDialog({
                                                 title: "Confirmar Exclusão",
-                                                message: `Tem certeza que deseja excluir o cliente ${row.original.firstName}?`,
+                                                message: `Tem certeza que deseja excluir o cliente ${row.original.firstName + ' ' + row.original.lastName}?`,
                                                 actions: [
                                                             {   
                                                             label: "Cancelar",
@@ -109,8 +106,7 @@ const ClientListing = () => {
                                     >
                                     Excluir
                                     </Button>
-                                </Col>
-                            </Row>
+                                </div>
                             ),
                         },
                     ]}

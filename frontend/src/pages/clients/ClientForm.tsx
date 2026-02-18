@@ -226,7 +226,6 @@ const ClientForm = ({ dataClient, onClose }: ClientFormProps) => {
                         handleBlur={handleBlur}
                         handleChange={handleChange}
                         value={convertDate(values)}
-                        defaultValue={values.birthDate? moment(values.birthDate).format("DD/MM/YYYY"): moment(new Date()).format("DD/MM/YYYY")}
                         formikError={errors.birthDate}
                       />
                     </Col>
