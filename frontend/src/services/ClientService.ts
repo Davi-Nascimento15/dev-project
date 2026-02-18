@@ -10,6 +10,10 @@ class ClientService extends BaseService {
     return await this.get<Client[]>("");
   }
 
+  async getbyDocument(document:string): Promise<Client[]> {
+    return await this.get<Client[]>('search', {document: document});
+  }
+
   async create(client: Client): Promise<string> {
     return await this.post<Client, string>("", client);
   }
@@ -20,6 +24,10 @@ class ClientService extends BaseService {
 
   async update(id: string, client: Client): Promise<void> {
     return await this.put<Client, void>(id, client);
+  }
+   
+  async import(base64: ({csvFile:string})): Promise<void> {
+    return await this.post<{csvFile:string}, void>("import", base64);
   }
 }
 

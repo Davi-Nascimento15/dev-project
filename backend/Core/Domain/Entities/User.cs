@@ -16,6 +16,7 @@ namespace Domain
             Username = username;
             PasswordHash = passwordHash;
             Profile = profile;
+            SetCreatedAt(DateTime.Now);
         }
     }
 }

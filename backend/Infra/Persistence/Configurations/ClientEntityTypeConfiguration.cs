@@ -13,6 +13,7 @@ namespace Persistence.Configurations
             builder.Property(b => b.LastName).IsRequired().HasColumnType("varchar(100)");
             builder.Property(b => b.PhoneNumber).IsRequired().HasColumnType("varchar(15)");
             builder.Property(b => b.DocumentNumber).IsRequired().HasColumnType("varchar(20)");
+            builder.Property(b => b.BirthDate).IsRequired().HasColumnType("datetime(6)");
             builder.Property(b => b.Email).IsRequired().HasColumnType("varchar(255)");
             builder.OwnsOne(c => c.Address, addressBuilder =>
             {

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 
 namespace Application.Client.Commands.CreateClient
 {
@@ -25,6 +26,11 @@ namespace Application.Client.Commands.CreateClient
             RuleFor(x => x.DocumentNumber)
                .NotEmpty()
                .WithMessage((obj, propertyValue) => $"DocumentNumber obrigatório");
+
+            RuleFor(x => x.BirthDate)
+                .NotEmpty()
+                .GreaterThanOrEqualTo(new DateTime()).WithMessage((obj, propertyValue) => $"Data não pode ser superior a atual")
+                .WithMessage((obj, propertyValue) => $"BirthDate obrigatório");
 
             RuleFor(x => x.Address)
                 .NotNull()

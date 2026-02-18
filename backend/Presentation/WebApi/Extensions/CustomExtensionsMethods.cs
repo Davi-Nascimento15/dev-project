@@ -5,6 +5,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Persistence.BackgroundJobs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace WebApi.Extensions
             services.AddValidatorsFromAssemblyContaining<IClientControlContext>();
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
-
+            services.AddHostedService<CsvProcessingWorker>();
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;

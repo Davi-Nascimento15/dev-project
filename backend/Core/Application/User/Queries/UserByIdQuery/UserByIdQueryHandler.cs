@@ -26,6 +26,7 @@ namespace Application.User.Queries.UserByIdQuery
                 {
                     Id = u.Id,
                     Username = u.Username,
+                    createdAt = u.CreatedAt,
                     Profile = u.Profile.ToString()
                 })
                 .FirstOrDefaultAsync(cancellationToken);

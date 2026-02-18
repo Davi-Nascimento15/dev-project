@@ -28,6 +28,9 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -95,7 +98,7 @@ namespace Persistence.Migrations
                         {
                             Id = new Guid("a1b2c3d4-e5f6-7890-1234-567890abcdef"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PasswordHash = "$2a$11$5lKCgo.cvqYJsgdqCiGe5OUzCQv54Ngq4Y6dbG6rg1cqUF2Zy79Sa",
+                            PasswordHash = "$2a$11$ILLUGhEBK9sDu3pKV6gi5ukjO37P70XSxpM/BnRe4I9NV5Up4iZnW",
                             Profile = "Administrator",
                             Username = "admin"
                         });

@@ -26,6 +26,8 @@ namespace Application.User.Commands.CreateUser
                 Profile = request.Profile
             };
 
+            user.SetCreatedAt(DateTime.Now);
+
             _context.Users.Add(user);
 
             await _context.SaveChangesAsync(cancellationToken);

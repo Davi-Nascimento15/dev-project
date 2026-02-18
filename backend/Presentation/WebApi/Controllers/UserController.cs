@@ -1,4 +1,5 @@
 
+using Application.User.Queries.UserByNameQuery;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +38,7 @@ namespace WebApi.Controllers
             var user = await _mediator.Send(new Application.User.Queries.UserByIdQuery.UserByIdQueryRequest { Id = id });
             return Ok(user);
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] Application.User.Commands.UpdateUser.UpdateUserCommandRequest request)
         {
@@ -47,6 +49,20 @@ namespace WebApi.Controllers
 
             await _mediator.Send(request);
             return NoContent();
+        }
+
+        [HttpPost("import")]
+        public async Task<IActionResult> Import([FromBody] Application.User.Commands.ImportUser.ImportUserCommandRequest request)
+        {
+            await _mediator.Send(request);
+            return NoContent();
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> GetByName([FromQuery] string userName)
+        {
+            var response = await _mediator.Send(new UserByNameQueryRequest { Username = userName });
+            return Ok(response);
         }
     }
 }

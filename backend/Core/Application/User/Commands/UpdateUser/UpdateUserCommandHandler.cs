@@ -3,6 +3,7 @@ using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ namespace Application.User.Commands.UpdateUser
 
             user.Username = request.Username;
             user.Profile = request.Profile;
+            user.SetModifiedAt(DateTime.Now);
 
             await _context.SaveChangesAsync(cancellationToken);
 

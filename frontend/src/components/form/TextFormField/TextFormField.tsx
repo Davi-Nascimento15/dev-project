@@ -506,7 +506,7 @@ const ImageComponent = ({ componentType, ...props }: ImageProps) => {
           />
         </label>
       </FileInput>
-      {file instanceof File && file.type === "application/pdf" ? (
+      {file instanceof File && (file.type === "application/pdf" || file.type=='text/csv') ? (
         <a href={URL.createObjectURL(file)} target="_blank">
           {" "}
           {file.name}{" "}

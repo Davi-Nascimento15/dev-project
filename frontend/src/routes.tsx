@@ -32,12 +32,20 @@ export const routes = createBrowserRouter([
     
     {
         path: NAVIGATION_PATH.CLIENTS.ROOT,
-        element: <AuthGuard belongsTo={[UserProfile.Administrator]}><DashboardLayout /></AuthGuard>,
+        element: <AuthGuard belongsTo={[UserProfile.Administrator, UserProfile.Operator]}><DashboardLayout /></AuthGuard>,
         errorElement: <Page500 />,
         children: [
             { path: NAVIGATION_PATH.CLIENTS.LISTING.RELATIVE, Component: lazy(() => import("@/pages/clients/ClientListing")) },
-            { path: NAVIGATION_PATH.CLIENTS.CREATE.RELATIVE, Component: lazy(() => import("@/pages/clients/ClientForm")) },
-            
+            { path: NAVIGATION_PATH.CLIENTS.CREATE.RELATIVE, Component: lazy(() => import("@/pages/clients/ClientForm").then(module => ({default: (props: any) => module.default({dataClient:undefined,onClose:()=>{}})})))},
+        ]
+    },
+    {
+        path: NAVIGATION_PATH.USERS.ROOT,
+        element: <AuthGuard belongsTo={[UserProfile.Administrator]}><DashboardLayout /></AuthGuard>,
+        errorElement: <Page500 />,
+        children: [
+            { path: NAVIGATION_PATH.USERS.LISTING.RELATIVE, Component: lazy(() => import("@/pages/users/UserListing")) },
+            { path: NAVIGATION_PATH.USERS.CREATE.RELATIVE, Component: lazy(() => import("@/pages/users/UserForm").then(module => ({default: (props: any) => module.default({dataUser: undefined,onClose: ()=>{}})})))},
         ]
     },
     {

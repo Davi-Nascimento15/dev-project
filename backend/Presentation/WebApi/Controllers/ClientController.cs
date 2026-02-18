@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Client.Queries.ClientByDocumentQuery;
 
 namespace WebApi.Controllers
 {
@@ -31,6 +32,19 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateClientCommandRequest request)
+        {
+            if (id != request.Id)
+            {
+                return BadRequest();
+            }
+
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<AllClientsQueryResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListAll()
@@ -47,5 +61,22 @@ namespace WebApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("search")]
+        [ProducesResponseType(typeof(ClientByDocumentQueryResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ListByDocument([FromQuery] string document)
+        {
+            var response = await _mediator.Send(new ClientByDocumentQueryRequest { DocumentClient = document });
+
+            return Ok(response);
+        }
+
+        [HttpPost("import")]
+        public async Task<IActionResult> Import([FromBody] Application.Client.Commands.ImportClient.ImportClientCommandRequest request)
+        {
+            await _mediator.Send(request);
+            return NoContent();
+        }
     }
+
 }
