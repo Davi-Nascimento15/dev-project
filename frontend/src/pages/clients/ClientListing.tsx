@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from "react";
-import { Button, Card, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import { NAVIGATION_PATH } from "@/constants";
 import { Client } from "@/types/api/Client";
 import DataTable from "@/components/DataTable";
@@ -12,6 +12,7 @@ import ClientForm from "./ClientForm";
 import { useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import ImportClient from "./ClientImport";
+import { useDialog } from "@/contexts/DialogContext";
 
 const ClientListing = () => {
     const navigate = useNavigate();
@@ -19,6 +20,7 @@ const ClientListing = () => {
     const [date, setDate] = useState<Date>();
     const [showModal, setModal] = useState<({show:boolean, data:Client|undefined})>({show:false, data:undefined});
     const [showImportModal, setImportModal] = useState<boolean>(false);
+    const { showDialog } = useDialog();
 
     useEffect(() => {
         setDate(new Date());
@@ -70,13 +72,45 @@ const ClientListing = () => {
                             Header: "Ações",
                             id: "actions",
                             Cell: ({ row }: { row: { original: Client} }) => (
-                            <Button 
-                                variant="outline-primary" 
-                                size="sm"
-                                onClick={() => handleActionClick(row.original)}
-                            >
-                            Editar
-                            </Button>
+                            <Row>
+                                <Col md={3}>
+                                    <Button 
+                                        variant="outline-primary" 
+                                        size="sm"
+                                        onClick={() => handleActionClick(row.original)}
+                                    >
+                                    Editar
+                                    </Button>
+                                </Col>
+                                <Col  md={3}>
+                                    <Button 
+                                        variant="outline-danger" 
+                                        size="sm"
+                                        onClick={() => {
+                                            showDialog({
+                                                title: "Confirmar Exclusão",
+                                                message: `Tem certeza que deseja excluir o cliente ${row.original.firstName}?`,
+                                                actions: [
+                                                            {   
+                                                            label: "Cancelar",
+                                                            color: "inherit",
+                                                            onClick: () =>{},
+                                                            },
+                                                            {
+                                                            label: "Excluir",
+                                                            color: "primary",
+                                                            onClick: async () => {
+                                                                await ClientService.deleteClient(row.original.id!);
+                                                                await queryClient.invalidateQueries({  queryKey: [["client", "listing", date]],exact: false});
+                                                            }
+                                                            }
+                                                        ]
+                                                });}}
+                                    >
+                                    Excluir
+                                    </Button>
+                                </Col>
+                            </Row>
                             ),
                         },
                     ]}

@@ -29,6 +29,10 @@ class ClientService extends BaseService {
   async import(base64: ({csvFile:string})): Promise<void> {
     return await this.post<{csvFile:string}, void>("import", base64);
   }
+
+   async deleteClient(id: string): Promise<void> {
+    return await this.delete(id);
+  }
 }
 
 export default new ClientService();

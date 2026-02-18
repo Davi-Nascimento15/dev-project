@@ -77,6 +77,14 @@ namespace WebApi.Controllers
             await _mediator.Send(request);
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var response = await _mediator.Send(new Application.Client.Commands.DeleteClient.DeleteClientCommandRequest { Id = id });
+            return Ok(response);
+        }
+
     }
 
 }

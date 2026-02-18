@@ -58,6 +58,13 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var response = await _mediator.Send(new Application.User.Commands.DeleteUser.DeleteUserCommandRequest { Id = id });
+            return Ok(response);
+        }
+
         [HttpGet("search")]
         public async Task<IActionResult> GetByName([FromQuery] string userName)
         {

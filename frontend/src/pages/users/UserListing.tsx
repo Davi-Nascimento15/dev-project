@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from "react";
-import { Button, Card, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import { NAVIGATION_PATH } from "@/constants";
 import DataTable from "@/components/DataTable";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import { User } from "@/types/api/User";
 import { UserProfile } from "@/types/api/enums/UserProfile";
 import UserService from "@/services/UserService";
 import ImportUser from "./UserImport";
+import { useDialog } from "@/contexts/DialogContext";
 
 const UserListing = () => {
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ const UserListing = () => {
     const [date, setDate] = useState<Date>();
     const [showModal, setModal] = useState<({show:boolean, data:User|undefined})>({show:false, data:undefined});
     const [showImportModal, setImportModal] = useState<boolean>(false);
+    const { showDialog } = useDialog();
 
     useEffect(() => {
         setDate(new Date());
@@ -74,13 +76,41 @@ const UserListing = () => {
                             Header: "Ações",
                             id: "actions",
                             Cell: ({ row }: { row: { original: User} }) => (
-                            <Button 
-                                variant="outline-primary" 
-                                size="sm"
-                                onClick={() => handleActionClick(row.original)}
-                            >
-                            Editar
-                            </Button>
+                            <div className="d-flex justify-content-center align-items-center gap-2"  style={{ flexWrap:'wrap'}}>
+                                    <Button 
+                                        variant="outline-primary" 
+                                        size="sm"
+                                        onClick={() => handleActionClick(row.original)}
+                                    >
+                                    Editar
+                                    </Button>
+                                    <Button 
+                                        variant="outline-danger" 
+                                        size="sm"
+                                        onClick={() => {
+                                            showDialog({
+                                                title: "Confirmar Exclusão",
+                                                message: `Tem certeza que deseja excluir o usuário ${row.original.username}?`,
+                                                actions: [
+                                                            {   
+                                                                label: "Cancelar",
+                                                                color: "inherit",
+                                                                onClick: () =>{},
+                                                            },
+                                                            {
+                                                                label: "Excluir",
+                                                                color: "primary",
+                                                                onClick: async () => {
+                                                                    await UserService.deleteUser(row.original.id!);
+                                                                    await queryClient.invalidateQueries({  queryKey: [["user", "listing", date]],exact: false});
+                                                            }
+                                                            }
+                                                        ]
+                                                });}}
+                                        >
+                                        Excluir
+                                        </Button>
+                                </div>
                             ),
                         },
                     ]}

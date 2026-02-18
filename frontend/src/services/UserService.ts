@@ -25,6 +25,10 @@ class UserService extends BaseService {
    async getbyName(userName:string): Promise<User[]> {
       return await this.get<User[]>('search', {userName: userName});
     }
+
+  async deleteUser(id: string): Promise<void> {
+    return await this.delete(id);
+  }
 }
 
 export default new UserService();
